@@ -6,7 +6,7 @@
  
 #define P 100
 
-#define G 250
+#define G 10000
  
 #define PROB_C 0.8
  
@@ -26,6 +26,7 @@ typedef struct {
 void generate_random_population(individual *population);
 void print_generation(individual * generation);
 void calculate_fitness(individual *individual);
+void roulette_wheel_selection(individual *population, individual *offspring, fitness_info *current_fitness_info);
 void tournament_selection(individual *population, individual *offspring);
 void crossover(individual *offspring);
 void mutate(individual *offspring);
@@ -33,7 +34,7 @@ void get_fitness_stats(individual *population, fitness_info *current_fitness_inf
 void print_individual(individual *individual);
 void plot_graph(int *x, int *y, int len);
 
-int main() {
+int main(int argc, char *argv[]) {
 
     srand(564);
 
@@ -66,7 +67,9 @@ int main() {
         
         number_of_generations++;
 
-        tournament_selection(population, offspring);
+        roulette_wheel_selection(population, offspring, &current_fitness_info);
+
+        //tournament_selection(population, offspring);
 
         printf("\nGeneration %d\n", number_of_generations);
 
@@ -120,6 +123,30 @@ void generate_random_population(individual *population) {
 
         printf("\t:\tFitness is %d\n", population[i].fitness);
     }
+}
+
+void roulette_wheel_selection(individual *population, individual *offspring, fitness_info *current_fitness_info) {
+    
+    int i, j, selection_point, running_total;
+
+    for(i = 0; i < P; i++)
+    {
+        selection_point = rand() % current_fitness_info->total;
+
+        running_total = 0;
+
+        j = 0;
+
+        while(running_total <= selection_point) {
+
+            running_total += population[j].fitness;
+            
+            j++;
+        }
+
+        offspring[i] = population[j - 1];
+    }
+    
 }
 
 void tournament_selection(individual *population, individual *offspring) {
@@ -280,7 +307,11 @@ void plot_graph(int *x, int *y, int len) {
     
     FILE *p = popen("gnuplot -persistent", "w");
 
-    int i, max_fitness, max_generation;
+    int i;
+    
+    int max_fitness = 0;
+
+    int max_generation = 0;
 
     fprintf(p, "set title \"Max Fitness by Generation\"\n set key left\n set xlabel \"Number of Generations\"\n set ylabel \"Max Fitness\"\n plot '-' smooth csplines\n");
 
