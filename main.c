@@ -19,6 +19,14 @@ int main(int argc, char *argv[]) {
 
     int y[G];
 
+    int roulette_wheel = 0;
+
+    if( argc == 2 ) {
+        if(!strcmp(argv[1], "-rw")) {
+            roulette_wheel = 1;
+        }
+    }
+
     generate_random_population(population);
     
     while(number_of_generations < G) {
@@ -33,9 +41,11 @@ int main(int argc, char *argv[]) {
 
         number_of_generations++;
 
-        // roulette_wheel_selection(population, offspring, &current_fitness_info);
-
+        if(roulette_wheel == 1) {
+        roulette_wheel_selection(population, offspring, &current_fitness_info);
+        } else {
         tournament_selection(population, offspring);
+        }
 
         printf("\nGeneration %d\n", number_of_generations);
 
