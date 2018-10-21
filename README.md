@@ -4,7 +4,7 @@ Simple genetic algorithm which uses either roulette wheel or tournament selectio
 
 ### Build
 
-`make ./main`
+`make main`
 
 ### Run
 
