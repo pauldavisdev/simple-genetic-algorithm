@@ -2,15 +2,15 @@
 
 #define POPULATION_OPERATIONS_H
 
-#define N 100
+#define N 8
 
-#define P 100
+#define P 20
 
-#define G 300
+#define G 20
 
 #define PROB_C 0.8
 
-#define PROB_M 0.0019
+#define PROB_M 0.09
 
 typedef struct {
     int gene[N];

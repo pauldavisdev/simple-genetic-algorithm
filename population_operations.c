@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "population_operations.h"
 
 void generate_random_population(individual *population) {
@@ -179,10 +180,13 @@ void calculate_individual_fitness(individual *individual) {
     for(i = 0; i < N; i++) {
 
         if(individual->gene[i] == 1) {
-            fitness++;
+            fitness += pow(2, i);
         }
 
     }
+
+    fitness = pow(fitness, 2);
+
     individual->fitness = fitness;
 }
 
@@ -229,7 +233,7 @@ void plot_graph(int *x, int *y, int len) {
 
     int max_generation = 0;
 
-    fprintf(p, "set title \"Max Fitness by Generation\"\n set key left\n set xlabel \"Number of Generations\"\n set ylabel \"Max Fitness\"\n plot '-' smooth csplines\n");
+    fprintf(p, "set yrange [0:66000]\nset title \"Max Fitness by Generation\"\n set key left\n set xlabel \"Number of Generations\"\n set ylabel \"Max Fitness\"\n plot '-' smooth csplines\n");
 
     for(i = 0; i < len; i++) {
         fprintf(p, "%d %d\n", x[i], y[i]);
