@@ -27,11 +27,19 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    FILE *fp;
+
+    fp = fopen ("results.csv","w");
+
+    fprintf(fp, "Max,Total,Average\n");
+
     generate_random_population(population);
     
     while(number_of_generations < G) {
         
         calculate_population_fitness(population, &current_fitness_info);
+
+        fprintf(fp, "%d,%d,%f\n", current_fitness_info.max, current_fitness_info.total, current_fitness_info.average);
 
         print_generation(population, &current_fitness_info);
 
