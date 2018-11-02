@@ -36,7 +36,11 @@ int main(int argc, char *argv[]) {
     generate_random_population(population);
     
     while(number_of_generations < G) {
-        
+
+        for(int i = 0; i < P; i++) {
+            calculate_individual_fitness(&population[i]);
+        }        
+
         calculate_population_fitness(population, &current_fitness_info);
 
         fprintf(fp, "%d,%d,%.3f\n", current_fitness_info.max, current_fitness_info.total, current_fitness_info.average);
